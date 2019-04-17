@@ -68,7 +68,7 @@
 	<fieldset>
 		<legend>Informações Residenciais:</legend>
 		<div class="form-group">
-			<label for="inputAddress">Endereço</label>
+			<label for="inputAddress">Rua</label>
 			<input type="text" name="rua" class="form-control" id="inputAddress" placeholder="Av. Rio Branco">
 		</div>
 		<div class="form-row">
@@ -90,13 +90,21 @@
 				<label for="inputState">Estado</label>
 				<select id="inputState" name="estado" class="form-control">
 					<option selected>Escolha...</option>
-					<option>AC</option> 	<option>AL</option> 	<option>AP</option> 	<option>AM</option>
-					<option>BA</option> 	<option>CE</option> 	<option>DF</option> 	<option>ES</option>
-					<option>GO</option> 	<option>MA</option> 	<option>MT</option> 	<option>MS</option>
-					<option>MG</option> 	<option>PA</option> 	<option>PB</option> 	<option>PR</option>
-					<option>PE</option> 	<option>PI</option> 	<option>RJ</option> 	<option>RN</option>
-					<option>RS</option> 	<option>RO</option> 	<option>RR</option> 	<option>SC</option>
-					<option>SP</option>	 	<option>SE</option> 	<option>TO</option>
+					<?php 
+						$estados = array('AC', 'AL', 'AP', 'AM',
+										 'BA', 'CE', 'DF', 'ES',
+										 'GO', 'MA', 'MT', 'MS',
+										 'MG', 'PA', 'PB', 'PR',
+										 'PE', 'PI', 'RJ', 'RN',
+										 'RS', 'RO', 'RR', 'SC',
+										 'SP', 'SE', 'TO');
+
+						foreach ($estados as &$estado){
+							echo '<option>' . $estado . '</option>';
+						}
+
+
+					?>
 				</select>
 			</div>
 			<div class="form-group col-md-2">
@@ -108,54 +116,53 @@
 	<button type="submit" class="btn btn-primary" value="Submit" name="submit">Confirmar</button>
 	</form>
 	<!-- Fim do Formulário de Cadastro de Usuário	-->
+
 	<?php
-	/* Ligação com Banco de Dados */
-	if(isset($_POST["submit"]))
-	{
-		include_once("conexao.php");	/* Estabelece a conexão */
+		/* Ligação com Banco de Dados */
+		if(isset($_POST["submit"])) {
+			include_once("conexao.php");	/* Estabelece a conexão */
 
-		$tipo_usuario =  $_POST['tipo_usuario'];
+			$tipo_usuario =  $_POST['tipo_usuario'];
 
-		$email = $_POST['email'];
-		$senha = $_POST['senha'];
+			$email = $_POST['email'];
+			$senha = $_POST['senha'];
 
-		$nome = $_POST['nome'];
-		$telefone = $_POST['telefone'];
-		$cpf = $_POST['cpf'];
+			$nome = $_POST['nome'];
+			$telefone = $_POST['telefone'];
+			$cpf = $_POST['cpf'];
 
-		$rua = $_POST['rua'];
-		$numero = $_POST['numero'];
-		$complemento = $_POST['complemento'];
-		$cidade = $_POST['cidade'];
-		$estado = $_POST['estado'];
-		$cep = $_POST['cep'];
+			$rua = $_POST['rua'];
+			$numero = $_POST['numero'];
+			$complemento = $_POST['complemento'];
+			$cidade = $_POST['cidade'];
+			$estado = $_POST['estado'];
+			$cep = $_POST['cep'];
 
-		$sql = "INSERT INTO endereco (rua, numero, complemento, cep, cidade, estado) VALUES ('$rua', '$numero', '$complemento', '$cep', '$cidade', '$estado')";
-		$salvar = mysqli_query($conexao, $sql);
+			$sql = "INSERT INTO endereco (rua, numero, complemento, cep, cidade, estado) VALUES ('$rua', '$numero', '$complemento', '$cep', '$cidade', '$estado')";
+			$resultado = mysqli_query($conexao, $sql);
 
-		$id_endereco = mysqli_insert_id($conexao);
+			$id_endereco = mysqli_insert_id($conexao);
 
 
-		$sql = "INSERT INTO usuario (nome, email, senha, telefone, cpf, id_endereco, tipo_usuario) VALUES ('$nome', '$email', '$senha', '$telefone', '$cpf', '$id_endereco', '$tipo_usuario')";
-		$salvar = mysqli_query($conexao, $sql);
+			$sql = "INSERT INTO usuario (nome, email, senha, telefone, cpf, id_endereco, tipo_usuario) VALUES ('$nome', '$email', '$senha', '$telefone', '$cpf', '$id_endereco', '$tipo_usuario')";
+			$resultado = mysqli_query($conexao, $sql);
 
-		if($salvar){
-			?>
-			<div class="alert alert-success">Usuário cadastrado com sucesso!</div>
-			<?php
+			if($resultado){
+				?>
+				<div class="alert alert-success">Usuário cadastrado com sucesso!</div>
+				<?php
+			}
+			else
+			{
+				die(mysqli_error($conexao));
+				?>
+				<div class="alert alert-warning">Falha ao cadastrar usuário!</div>
+				<?php
+			}
+		
+			mysqli_close($conexao);
+		
 		}
-		else
-		{
-			die(mysqli_error($conexao));
-			?>
-			<div class="alert alert-warning">Falha ao cadastrar usuário!</div>
-			<?php
-		}
-	
-		mysqli_close($conexao);
-	
-	}
-
 	?>
 
 </body>

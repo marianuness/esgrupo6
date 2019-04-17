@@ -15,11 +15,11 @@
 		</li>
 
 		<li class="nav-item">
-		<a class="nav-link" href="cadastroUsuario.php">Cadastro de Usuário</a>
+		<a class="nav-link" href="usuario_cadastro.php">Cadastro de Usuário</a>
 		</li>
 
 		<li class="nav-item">
-		<a class="nav-link" href="visualizar_usuario.php">Visualizar Usuários</a>
+		<a class="nav-link" href="usuario_visualizar.php">Visualizar Usuários</a>
 		</li>
 	</ul>
 	</div>

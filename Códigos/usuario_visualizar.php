@@ -69,14 +69,14 @@
 				echo '<td>' . $endereco['cidade'] . '</td>';
 				echo '<td>' . $endereco['estado'] . '</td>';
 				echo '<td>' . $usuario['tipo_usuario'] . '</td>';
+				echo '<td><a href="usuario_editar.php?id=' . $usuario['id'] . '">Editar</a></td>';
+				echo '<td><a href="usuario_deletar.php?id=' . $usuario['id'] . '">Deletar</a></td>';
 			echo "</tr>";
 		}
 
 		echo "</table>";
 	?>
-
-
-
+	
 </body>
 
 </html>
