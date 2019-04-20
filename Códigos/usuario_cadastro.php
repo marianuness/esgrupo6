@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="publico/css/bootstrap.min.css" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="publico/js/desativar_radio.js"></script>
 	<link rel="stylesheet" href="publico/css/estilo.css">
 </head>
 
@@ -35,8 +36,18 @@
 	<!-- Formulário de Cadastro de Usuário -->
 	<form action="" method="POST" target="_self">
 		 <p>
-			<input type="radio" name="tipo_usuario" value="cliente" checked="checked"/> Cliente
-			<input type="radio" name="tipo_usuario" value="funcionario"/> Funcionário
+			<?php
+				$tipo_usuario_logado = $_GET['tipo'];
+				
+				if ($tipo_usuario_logado != 'funcionario') {
+					echo '<input type="radio" name="tipo_usuario" value="cliente" checked="checked"/> Cliente';
+					echo '<input type="radio" name="tipo_usuario" value="funcionario"/> Funcionário';
+				}
+				else{
+					echo '<input type="radio" name="tipo_usuario" value="cliente" checked="checked"/> Cliente';
+					echo '<input type="radio" name="tipo_usuario" value="funcionario" disabled="disabled"/> Funcionário';
+				}
+			?>
 		</p>
 	<fieldset>
 		<legend>Informações Pessoais:</legend>

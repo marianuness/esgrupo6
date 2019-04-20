@@ -15,7 +15,7 @@
 		</li>
 
 		<li class="nav-item">
-		<a class="nav-link" href="usuario_cadastro.php">Cadastro de Usuário</a>
+		<a class="nav-link" href="usuario_cadastro.php?tipo='funcionario'">Cadastro de Usuário</a>
 		</li>
 
 		<li class="nav-item">

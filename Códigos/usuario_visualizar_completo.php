@@ -19,20 +19,27 @@
 <hr>
 
 <body>
-	<a href="usuario_visualizar_completo.php"> Ver dados completos </a>
-	<p> </p>
 	<?php
 
 		include_once("conexao.php");	/* Estabelece a conexão */
 
-		$sql = "SELECT * FROM usuario ORDER BY nome";
+		$sql = "SELECT * FROM usuario";
 		$usuarios = mysqli_query($conexao, $sql);
 
 		echo "<table border='1' cellpadding='10'>";
 
 		echo "	<tr> 
+					<th>ID</th> 
 					<th>Nome</th> 
 					<th>E-Mail</th>
+					<th>Telefone</th> 
+					<th>CPF</th> 
+					<th>Rua</th> 
+					<th>Número</th> 
+					<th>Complemento</th> 
+					<th>CEP</th> 
+					<th>Cidade</th> 
+					<th>Estado</th> 
 					<th>Tipo Usuário</th> 
 				</tr>";
 
@@ -43,9 +50,21 @@
 			$endereco = mysqli_fetch_array( mysqli_query($conexao, $sql) );
 
 			echo "<tr>";
+				echo '<td>' . $usuario['id'] . '</td>';
 				echo '<td>' . $usuario['nome'] . '</td>';
 				echo '<td>' . $usuario['email'] . '</td>';
+				/*echo '<td>' . $usuario['senha'] . '</td>';*/
+				echo '<td>' . $usuario['telefone'] . '</td>';
+				echo '<td>' . $usuario['cpf'] . '</td>';
+				echo '<td>' . $endereco['rua'] . '</td>';
+				echo '<td>' . $endereco['numero'] . '</td>';
+				echo '<td>' . $endereco['complemento'] . '</td>';
+				echo '<td>' . $endereco['cep'] . '</td>';
+				echo '<td>' . $endereco['cidade'] . '</td>';
+				echo '<td>' . $endereco['estado'] . '</td>';
 				echo '<td>' . $usuario['tipo_usuario'] . '</td>';
+				echo '<td><a href="usuario_editar.php?id=' . $usuario['id'] . '">Editar</a></td>';
+				echo '<td><a href="usuario_deletar.php?id=' . $usuario['id'] . '">Deletar</a></td>';
 			echo "</tr>";
 		}
 
