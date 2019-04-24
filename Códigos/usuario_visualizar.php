@@ -19,10 +19,11 @@
 <hr>
 
 <body>
+	<a href="usuario_cadastro.php"> Cadastrar Usuário </a> </br>
 	<a href="usuario_visualizar_completo.php"> Ver dados completos </a>
 	<p> </p>
-	<?php
 
+	<?php
 		include_once("conexao.php");	/* Estabelece a conexão */
 
 		$sql = "SELECT * FROM usuario ORDER BY nome";

@@ -8,7 +8,6 @@
 	<link rel="stylesheet" href="publico/css/bootstrap.min.css" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	<script type="text/javascript" src="publico/js/desativar_radio.js"></script>
 	<link rel="stylesheet" href="publico/css/estilo.css">
 </head>
 
@@ -21,13 +20,11 @@
 <body>
 	<!-- Script para fazer a máscara. Com ele, você pode definir qualquer tipo de máscara com o comando onkeypress="mascara(this, '###.###.###-##')". -->
 	<script language="JavaScript">
-		function mascara(t, mask)
-		{
+		function mascara(t, mask){
 			var i = t.value.length;				
 			var saida = mask.substring(1,0);
 			var texto = mask.substring(i)
-			if (texto.substring(0,1) != saida)
-			{
+			if (texto.substring(0,1) != saida){
 				t.value += texto.substring(0,1);
 			}
 		}
@@ -37,15 +34,13 @@
 	<form action="" method="POST" target="_self">
 		 <p>
 			<?php
-				$tipo_usuario_logado = $_GET['tipo'];
-				
-				if ($tipo_usuario_logado != 'funcionario') {
-					echo '<input type="radio" name="tipo_usuario" value="cliente" checked="checked"/> Cliente';
-					echo '<input type="radio" name="tipo_usuario" value="funcionario"/> Funcionário';
+				if (isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'funcionario'){
+					echo '<input type="radio" name="tipo_usuario" value="cliente" checked="checked"/> Cliente ';
+					echo '<input type="radio" name="tipo_usuario" value="funcionario"/> Funcionário ';
 				}
 				else{
-					echo '<input type="radio" name="tipo_usuario" value="cliente" checked="checked"/> Cliente';
-					echo '<input type="radio" name="tipo_usuario" value="funcionario" disabled="disabled"/> Funcionário';
+					echo '<input type="radio" name="tipo_usuario" value="cliente" checked="checked"/> Cliente ';
+					echo '<input type="radio" name="tipo_usuario" value="funcionario" disabled="disabled"/> Funcionário ';
 				}
 			?>
 		</p>
@@ -113,8 +108,6 @@
 						foreach ($estados as &$estado){
 							echo '<option>' . $estado . '</option>';
 						}
-
-
 					?>
 				</select>
 			</div>
@@ -163,8 +156,7 @@
 				<div class="alert alert-success">Usuário cadastrado com sucesso!</div>
 				<?php
 			}
-			else
-			{
+			else{
 				die(mysqli_error($conexao));
 				?>
 				<div class="alert alert-warning">Falha ao cadastrar usuário!</div>
@@ -172,7 +164,6 @@
 			}
 		
 			mysqli_close($conexao);
-		
 		}
 	?>
 

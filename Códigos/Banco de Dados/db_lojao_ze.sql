@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb5
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Apr 19, 2019 at 07:54 PM
--- Server version: 5.7.25-0ubuntu0.18.04.2
--- PHP Version: 7.2.15-0ubuntu0.18.04.2
+-- Host: 127.0.0.1
+-- Generation Time: 24-Abr-2019 às 18:22
+-- Versão do servidor: 10.1.38-MariaDB
+-- versão do PHP: 7.3.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `endereco`
+-- Estrutura da tabela `endereco`
 --
 
 CREATE TABLE `endereco` (
@@ -34,21 +36,21 @@ CREATE TABLE `endereco` (
   `cep` varchar(10) NOT NULL,
   `cidade` varchar(40) NOT NULL,
   `estado` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `endereco`
+-- Extraindo dados da tabela `endereco`
 --
 
 INSERT INTO `endereco` (`id`, `rua`, `numero`, `complemento`, `cep`, `cidade`, `estado`) VALUES
-(1, 'Av. Rio Branco', 120, '', '00.000-000', 'Juiz de Fora', 'MG'),
-(2, 'Av. Brasil', 520, 'Casa', '11.111-111', 'Juiz de Fora', 'MG'),
-(3, 'Av. Presidente Itamar Franco', 501, 'Apartamento 404', '22.222-222', 'Juiz de Fora', 'MG');
+(11, 'Av. Rio Branco', 220, '', '36.000-48', 'Juiz de Fora', 'MG'),
+(12, 'Em algum lugar', 1010, 'Casa', '00.000-000', 'Juiz de Fora', 'DF'),
+(15, 'Em algum lugar', 1212, '1212', '00.000-000', 'Juiz de Fora', 'DF');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estrutura da tabela `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -60,16 +62,16 @@ CREATE TABLE `usuario` (
   `cpf` varchar(14) NOT NULL,
   `id_endereco` int(11) NOT NULL,
   `tipo_usuario` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `usuario`
+-- Extraindo dados da tabela `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`, `telefone`, `cpf`, `id_endereco`, `tipo_usuario`) VALUES
-(1, 'Kevyn', 'kevyn@teste.com', '000000', '00 0000-0000', '000.000.000-00', 1, 'cliente'),
-(2, 'ZÃ© da Silva', 'ze@gmail.com', '11111111', '11 1111-1111', '111.111.111-11', 2, 'funcionario'),
-(3, 'Ana', 'ana@teste.com', '22222222', '22 2222-2222', '222.222.222-22', 3, 'cliente');
+(11, 'Kevyn', 'kevyn@teste.com', '123132', '3233332222', '111.111.111-11', 11, 'cliente'),
+(12, 'ZÃ© o Dono', 'zeh@gmail.com', '000000000', '000000000', '000.000.000-00', 12, 'cliente'),
+(15, 'Apenas Teste', 'admin', 'vertrigo', '000000000', '000.000.000-00', 15, 'cliente');
 
 --
 -- Indexes for dumped tables
@@ -96,21 +98,24 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `endereco`
 --
 ALTER TABLE `endereco`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
 --
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `usuario`
+-- Limitadores para a tabela `usuario`
 --
 ALTER TABLE `usuario`
   ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_endereco`) REFERENCES `endereco` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
