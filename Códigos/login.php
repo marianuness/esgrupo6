@@ -26,7 +26,7 @@
 		$email = mysqli_real_escape_string($conexao,$_POST['email']);
 		$senha = mysqli_real_escape_string($conexao,$_POST['senha']); 
 
-		$sql = "SELECT tipo_usuario FROM usuario WHERE email='$email' and senha='$senha'";
+		$sql = "SELECT * FROM usuario WHERE email='$email' and senha='$senha'";
 		$resultado = mysqli_query($conexao, $sql);
 		$usuario = mysqli_fetch_array($resultado);
 
@@ -36,7 +36,15 @@
 			$_SESSION['logado'] = true;
 			$_SESSION['nome'] = $usuario;
 			$_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
+			if($usuario['tipo_usuario'] == 'Funcionario'){
+				$id = $usuario['id_cadastro'];
+				$sql = "SELECT cargo FROM funcionario WHERE id_funcionario='$id'";
+				$resultado = mysqli_query($conexao, $sql);
+				$funcionario = mysqli_fetch_array($resultado);
 
+				$_SESSION['cargo'] = $funcionario['cargo'];
+			}
+			
 			header("location: index.php");
 		}
 		else {
@@ -53,7 +61,8 @@
 			   <form action = "" method = "post">
 				  <label>E-Mail:</label> <input type="text"     name="email" class="box"/>  <br/><br/>
 				  <label>Senha:</label>  <input type="password" name="senha" class="box" /> <br/><br/>
-				  <input type = "submit" value = " Submit "/><br />
+				  <input type = "submit" value = " Logar "/>
+				  <a href="cliente_cadastro.php">Cadastrar-se</a><br />
 			   </form>
 			</div>
 				

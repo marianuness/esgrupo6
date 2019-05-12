@@ -17,7 +17,19 @@
 ?>
 
 <body>
-<hr> <!-- Preencher a página! -->
+	<?php
+		if(isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'Funcionario'){
+			?>
+
+			<a href="#"> Cadastrar Produto </a> </br>
+			<a href="#"> Editar Produto </a> </br>
+			<a href="#"> Excluir Produto </a>
+			<p> </p>
+
+			<?php
+		}
+	?>
+
 </body>
 
 <?php

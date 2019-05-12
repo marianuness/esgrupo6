@@ -3,12 +3,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Cadastro de Usuário</title>
+	<title>Cadastro de Funcionário</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="publico/css/bootstrap.min.css" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	<script type="text/javascript" src="js/utils.js"></script>
+	<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js">
+		$('.dinheiro').mask('#.##0,00', {reverse: true});</script>
 	<link rel="stylesheet" href="publico/css/estilo.css">
 </head>
 
@@ -29,23 +30,13 @@
 				t.value += texto.substring(0,1);
 			}
 		}
+		function mascaraDinheiro(t) {
+			$('.dinheiro').mask('#.00', {reverse: true});
+		}
 	</script>
 	<!-- Fim do script -->
 	<!-- Formulário de Cadastro de Usuário -->
 	<form action="" method="POST" target="_self">
-		<div class="form-group col-md-4">
-			<label for="inputState">Tipo de Usuário</label>
-			<select id="inputState" name="tipo_usuario" class="form-control">
-				<option selected>Cliente</option>
-				<?php 
-					$estados = array('Administrador', 'Vendedor');
-
-					foreach ($estados as &$estado){
-						echo '<option>' . $estado . '</option>';
-					}
-				?>
-			</select>
-		</div>
 	<fieldset>
 		<legend>Informações Pessoais:</legend>
 		<div class="form-row">
@@ -73,6 +64,33 @@
 			</div>
 		</div>
 	</fieldset>
+	</br>
+	<fieldset>
+		<legend>Informações Funcionário:</legend>
+		<div class="form-row">
+			<div class="form-group col-md-4">
+			<label>Número de Identificação</label>
+			<input type="name" name="codigo_identificacao" class="form-control" placeholder="11.111-11" onkeypress="mascara(this, '##.###-##')" maxlength="9">
+			</div>
+			<div class="form-group col-md-4">
+			<label>Salário</label>
+			<input type="text" name="salario" placeholder="1.000,00" class="dinheiro form-control" onkeypress="mascaraDinheiro(this)" maxlength="11">
+			</div>
+			<div class="form-group col-md-4">
+			<label>Cargo</label>
+			<select id="cargo" name="cargo" class="form-control" onchange="getSelectedOption(select)"></script>
+				<?php 
+					$tipos = array('Administrador', 'Vendedor');
+
+					foreach ($tipos as &$tipo){
+						echo '<option>' . $tipo . '</option>';
+					}
+				?>
+			</select>
+			</div>
+		</div>
+	</fieldset>
+	</br>
 	<fieldset>
 		<legend>Informações Residenciais:</legend>
 		<div class="form-group">
@@ -124,13 +142,13 @@
 	<button type="submit" class="btn btn-primary" value="Submit" name="submit">Confirmar</button>
 	</form>
 	<!-- Fim do Formulário de Cadastro de Usuário	-->
-	
+
 	<?php
 		/* Ligação com Banco de Dados */
 		if(isset($_POST["submit"])) {
 			include_once("conexao.php");	/* Estabelece a conexão */
 
-			$tipo_usuario =  $_POST['tipo_usuario'];
+			$tipo_usuario =  'Funcionario';
 
 			$email = $_POST['email'];
 			$senha = $_POST['senha'];
@@ -138,6 +156,10 @@
 			$nome = $_POST['nome'];
 			$telefone = $_POST['telefone'];
 			$cpf = $_POST['cpf'];
+
+			$codigo_identificacao = $_POST['codigo_identificacao'];
+			$salario = $_POST['salario'];
+			$cargo = $_POST['cargo'];
 
 			$rua = $_POST['rua'];
 			$numero = $_POST['numero'];
@@ -147,7 +169,12 @@
 			$cep = $_POST['cep'];
 
 
-			$sql = "INSERT INTO usuario (nome, cpf, telefone, email, senha, rua, numero, cep, cidade, estado, comlemento, tipo_usuario) VALUES ('$nome', '$cpf', '$telefone', '$email', '$senha', '$rua', '$numero', '$cep', '$cidade', '$estado', '$complemento', '$tipo_usuario')";
+			$sql = "INSERT INTO usuario (nome, cpf, telefone, email, senha, rua, numero, cep, cidade, estado, complemento, tipo_usuario) VALUES ('$nome', '$cpf', '$telefone', '$email', '$senha', '$rua', '$numero', '$cep', '$cidade', '$estado', '$complemento', '$tipo_usuario')";
+			$resultado = mysqli_query($conexao, $sql);
+
+			$id_usuario = mysqli_insert_id($conexao); // Último ID inserido
+
+			$sql = "INSERT INTO funcionario (id_funcionario, codigo_identificacao, salario, cargo) VALUES ('$id_usuario', '$codigo_identificacao', '$salario', '$cargo')";
 			$resultado = mysqli_query($conexao, $sql);
 
 			if($resultado){

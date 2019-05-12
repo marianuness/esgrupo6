@@ -3,11 +3,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Cadastro de Usuário</title>
+	<title>Editar Funcionário</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="publico/css/bootstrap.min.css" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js">
+		$('.dinheiro').mask('#.##0,00', {reverse: true});</script>
 	<link rel="stylesheet" href="publico/css/estilo.css">
 </head>
 
@@ -18,13 +20,12 @@
 <hr>
 
 <body>
-	<a href="usuario_visualizar_completo.php?visualizar=<?php echo $visualizar; ?>"> Ver dados completos </a>
+	<a href="usuario_visualizar_completo.php?visualizar=Funcionario"> Ver dados completos </a>
 	<p> </p>
 
 	<!-- Script para fazer a máscara. Com ele, você pode definir qualquer tipo de máscara com o comando onkeypress="mascara(this, '###.###.###-##')". -->
 	<script language="JavaScript">
-		function mascara(t, mask)
-		{
+		function mascara(t, mask){
 			var i = t.value.length;				
 			var saida = mask.substring(1,0);
 			var texto = mask.substring(i)
@@ -33,6 +34,9 @@
 				t.value += texto.substring(0,1);
 			}
 		}
+		function mascaraDinheiro(t) {
+			$('.dinheiro').mask('#.00', {reverse: true});
+		}
 	</script>
 	<!-- Fim do script -->
 
@@ -40,31 +44,19 @@
 		$id = $_GET['id'];
 		include_once("conexao.php");	/* Estabelece a conexão */
 
-		$sql = "SELECT * FROM usuario WHERE id=" . $id;
-		$usuario = mysqli_fetch_array( mysqli_query($conexao, $sql) );
+		$sql = "SELECT * FROM funcionario WHERE id_funcionario=" . $id;
+		$funcionario = mysqli_fetch_array( mysqli_query($conexao, $sql) );
 
-		$sql = "SELECT * FROM endereco WHERE id=" . $usuario['id'];
-		$endereco = mysqli_fetch_array( mysqli_query($conexao, $sql) );
+		$sql = "SELECT * FROM usuario WHERE id_cadastro=" . $funcionario['id_funcionario'];
+		$usuario = mysqli_fetch_array( mysqli_query($conexao, $sql) );
 	?>
 
 
 
 
 	<!-- Formulário de Editar Usuário -->
+	
 	<form action="" method="POST" target="_self">
-		 <p>
-		 	<?php  
-		 		if ($usuario['tipo_usuario'] == "cliente") {
-					echo '<input type="radio" name="tipo_usuario" value="cliente" checked="checked"/> Cliente ';
-					echo '<input type="radio" name="tipo_usuario" value="funcionario"/> Funcionário';
-		 		}
-		 		else if ($usuario['tipo_usuario'] == "funcionario"){
-					echo '<input type="radio" name="tipo_usuario" value="cliente"/> Cliente ';
-					echo '<input type="radio" name="tipo_usuario" value="funcionario" checked="checked"/> Funcionário';
-
-		 		}
-		 	?>
-		</p>
 	<fieldset>
 		<legend>Informações Pessoais:</legend>
 		<div class="form-row">
@@ -80,40 +72,72 @@
 			-->
 		</div>
 		<div class="form-row">
-			<div class="form-group col-md-8">
+			<div class="form-group col-md-6">
 			<label for="inputEmail4">Nome</label>
 			<input type="name" name="nome" class="form-control" id="inputNome4" placeholder="Nome" value="<?php  echo $usuario['nome']; ?>">
 			</div>
-			<div class="form-group col-md-2">
+			<div class="form-group col-md-3">
 			<label for="inputPassword4">Telefone</label>
-			<input type="text" name="telefone" class="form-control" id="inputTelefone4" placeholder="(11)1111-1111" onkeypress="mascara(this, '## ####-####')"	maxlength="12" value="<?php  echo $usuario['telefone'] ?>">
+			<input type="text" name="telefone" class="form-control" id="inputTelefone4" placeholder="(11)1111-1111" onkeypress="mascara(this, '## ####-####')"	maxlength="12" value="<?php  echo $usuario['telefone']; ?>">
 			</div>
-			<div class="form-group col-md-2">
+			<div class="form-group col-md-3">
 			<label for="inputPassword4">CPF</label>
 			<input type="text" name="cpf" class="form-control" id="inputCPF4" placeholder="111.111.111-11" onkeypress="mascara(this, '###.###.###-##')"	maxlength="14" value="<?php  echo $usuario['cpf']; ?>">
 			</div>
 		</div>
 	</fieldset>
+	</br>
+	<fieldset>
+		<legend>Informações Funcionário:</legend>
+		<div class="form-row">
+			<div class="form-group col-md-4">
+			<label>Número de Identificação</label>
+			<input type="name" name="codigo_identificacao" class="form-control" placeholder="11111-11" onkeypress="mascara(this, '##.###-##')" maxlength="9" value="<?php  echo $funcionario['codigo_identificacao']; ?>">
+			</div>
+			<div class="form-group col-md-4">
+			<label>Salário</label>
+			<input type="text" name="salario" placeholder="1.000,00" class="dinheiro form-control" onkeypress="mascaraDinheiro(this)" maxlength="11" value="<?php  echo $funcionario['salario']; ?>">
+			</div>
+			<div class="form-group col-md-4">
+			<label>Cargo</label>
+			<select id="cargo" name="cargo" class="form-control" onchange="getSelectedOption(select)"></script>
+				<?php 
+					$tipos = array('Administrador', 'Vendedor');
+
+					foreach ($tipos as &$tipo){
+						if($tipo == $funcionario['cargo']){
+							echo '<option selected>' . $tipo . '</option>';
+						}
+						else{
+							echo '<option>' . $tipo . '</option>';
+						}
+					}
+				?>
+			</select>
+			</div>
+		</div>
+	</fieldset>
+	</br>
 	<fieldset>
 		<legend>Informações Residenciais:</legend>
 		<div class="form-group">
 			<label for="inputAddress">Rua</label>
-			<input type="text" name="rua" class="form-control" id="inputAddress" placeholder="Av. Rio Branco" value="<?php  echo $endereco['rua']; ?>">
+			<input type="text" name="rua" class="form-control" id="inputAddress" placeholder="Av. Rio Branco" value="<?php  echo $usuario['rua']; ?>">
 		</div>
 		<div class="form-row">
 			<div class="form-group col-md-2">
 				<label for="inputNumber">Número</label>
-				<input type="number" name="numero" class="form-control" id="inputNumber" placeholder="220" value="<?php  echo $endereco['numero']; ?>">
+				<input type="number" name="numero" class="form-control" id="inputNumber" placeholder="220" value="<?php  echo $usuario['numero']; ?>">
 			</div>
 			<div class="form-group col-md-10">
 				<label for="inputAddress2">Complemento</label>
-				<input type="text" name="complemento" class="form-control" id="inputAddress2" placeholder="Apartmento, estudio, or andar" value="<?php  echo $endereco['complemento']; ?>">
+				<input type="text" name="complemento" class="form-control" id="inputAddress2" placeholder="Apartmento, estudio, or andar" value="<?php  echo $usuario['complemento']; ?>">
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="inputCity">Cidade</label>
-				<input type="text" name="cidade" class="form-control" id="inputCity" placeholder="Cidade" value="<?php  echo $endereco['cidade']; ?>">
+				<input type="text" name="cidade" class="form-control" id="inputCity" placeholder="Cidade" value="<?php  echo $usuario['cidade']; ?>">
 			</div>
 			<div class="form-group col-md-4">
 				<label for="inputState">Estado</label>
@@ -128,7 +152,7 @@
 										 'SP', 'SE', 'TO');
 
 						foreach ($estados as &$estado){
-							if($estado == $endereco['estado']){
+							if($estado == $usuario['estado']){
 								echo '<option selected>' . $estado . '</option>';
 							}
 							else{
@@ -140,25 +164,28 @@
 			</div>
 			<div class="form-group col-md-2">
 				<label for="inputZip">CEP</label>
-				<input type="text" name="cep" class="form-control" id="cep" onkeypress="mascara(this, '##.###-###')" placeholder="11.111-111" maxlength="10" value="<?php  echo $endereco['cep']; ?>">
+				<input type="text" name="cep" class="form-control" id="cep" onkeypress="mascara(this, '##.###-###')" placeholder="11.111-111" maxlength="10" value="<?php  echo $usuario['cep']; ?>">
 			</div>
 		</div>
 	</fieldset>
-	<button type="submit" class="btn btn-primary" value="Submit" name="submit">Confirmar</button>
+	</br>
+	<button type="submit" class="btn btn-primary" value="Submit" name="submit">Finalizar Edição</button>
 	</form>
 	<!-- Fim do Formulário de Editar Usuário	-->
 
 	<?php
 		/* Ligação com Banco de Dados */
 		if(isset($_POST["submit"])) {
-			$tipo_usuario =  $_POST['tipo_usuario'];
-
 			$email = $_POST['email'];
 			// $senha = $_POST['senha'];
 
 			$nome = $_POST['nome'];
 			$telefone = $_POST['telefone'];
 			$cpf = $_POST['cpf'];
+
+			$codigo_identificacao = $_POST['codigo_identificacao'];
+			$salario = $_POST['salario'];
+			$cargo = $_POST['cargo'];
 
 			$rua = $_POST['rua'];
 			$numero = $_POST['numero'];
@@ -167,16 +194,14 @@
 			$estado = $_POST['estado'];
 			$cep = $_POST['cep'];
 
-			$sql = "UPDATE endereco 
-					SET rua='".$rua."', numero='".$numero."', complemento='".$complemento."',
-						cep='".$cep."', cidade='".$cidade."', estado='".$estado."' 
-					WHERE id=".$endereco['id'];
+			$sql = "UPDATE funcionario 
+					SET codigo_identificacao='".$codigo_identificacao."', salario='".$salario."', cargo='".$cargo."'
+					WHERE id_funcionario=".$usuario['id_cadastro'];
 			$resultado = mysqli_query($conexao, $sql);
 
 			$sql = "UPDATE usuario 
-					SET nome='".$nome."', email='".$email."', telefone='".$telefone."', 
-						cpf='".$cpf."', tipo_usuario='".$tipo_usuario."' 
-					WHERE id=".$usuario['id'];
+					SET nome='".$nome."', cpf='".$cpf."', telefone='".$telefone."', email='".$email."', rua='".$rua."', numero='".$numero."', cep='".$cep."', cidade='".$cidade."', estado='".$estado."', complemento='".$complemento."'
+					WHERE id_cadastro=".$usuario['id_cadastro'];
 			$resultado = mysqli_query($conexao, $sql);
 
 			if($resultado){
