@@ -29,8 +29,8 @@
 					($_SESSION['tipo_usuario'] == 'Cliente' || $_SESSION['tipo_usuario'] == 'Funcionario')){
 					?>
 
-					<li class="nav-item <?php esta_ativa('produto.php');?>">
-					<a class="nav-link" href="produto.php">Lista de Produtos</a>
+					<li class="nav-item <?php esta_ativa('produto_visualizar.php');?>">
+					<a class="nav-link" href="produto_visualizar.php">Lista de Produtos</a>
 					</li>
 
 					<?php

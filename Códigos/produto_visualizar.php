@@ -43,31 +43,33 @@
   <tr>
     <th>Nome</th>
     <th>Preço</th> 
-    <th>Descrição</th>
-	<?php
-	if(isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'Funcionario'){
-	echo '<th>Editar</th>';
-	echo '<th>Excluir</th>';
-	}
-	?>
+    <th>Fabricante</th>
+    <th>Desconto</th>
+    <th>Quantidade</th>
+    <th>Cód.Setor</th>
   </tr>
  <?php
 	include_once("conexao.php");
  	$sql = "SELECT * FROM produto";
 	$produtos = mysqli_query($conexao, $sql);
 	
-	foreach($produtos as $produto){
-		$sql = "SELECT * FROM produto WHERE id='".$produto['id']."'";
-		$selecionado = mysqli_fetch_array( mysqli_query($conexao, $sql) );
-		
+	foreach($produtos as $produto){		
+
+		$sql = "SELECT codigo_identificacao FROM setor WHERE id_setor=".$produto['id_setor'];
+		$codigo_identificacao = mysqli_query($conexao, $sql);
+		$id_setor = $setor['id_setor'];
+
 		echo "<tr>";
-		echo '<td>' . $selecionado['nome'] . '</td>';
-		echo '<td>' . $selecionado['preco'] . '</td>';
-		echo '<td>' . $selecionado['descricao'] . '</td>';
-		if(isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'Funcionario'){
-			echo '<td> <a href="produto_editar.php?id='.$selecionado['id'].'"> Editar Produto </a> </td>';
-			echo '<td> <a href="produto_excluir.php?id='.$selecionado['id'].'"> Excluir Produto </a> </td>';
-		}
+			echo '<td>' . $produto['nome'] . '</td>';
+			echo '<td>' . $produto['preco'] . '</td>';
+			echo '<td>' . $produto['fabricante'] . '</td>';
+			echo '<td>' . $produto['desconto'] . '</td>';
+			echo '<td>' . $produto['quantidade'] . '</td>';
+			echo '<td>' . $codigo_identificacao . '</td>';
+			if(isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'Funcionario'){
+				echo '<td> <a href="produto_editar.php?id='.$produto['id'].'"> Editar Produto </a> </td>';
+				echo '<td> <a href="produto_excluir.php?id='.$produto['id'].'"> Excluir Produto </a> </td>';
+			}
 		echo "</tr>";
 	}
 ?>
