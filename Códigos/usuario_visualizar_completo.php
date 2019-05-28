@@ -27,7 +27,16 @@
 		$sql = "SELECT * FROM ".$visualizar;
 		$selecionados = mysqli_query($conexao, $sql);
 
+		if($visualizar == 'Cliente'){
+			echo "<a href='usuario_visualizar.php?visualizar=Cliente'> Visualizar dados simplificados </a> </br>";
+		}
+		else if($visualizar == 'Funcionario'){
+			echo "<a href='usuario_visualizar.php?visualizar=Funcionario'> Visualizar dados simplificados </a> </br>";
+		}
+
 		?>
+
+		<p> </p>
 
 		<table border='1' cellpadding='10'>
 			<tr> 
@@ -102,6 +111,11 @@
 			?>
 		</table>
 	
+	</br>
 </body>
+
+<?php
+	include "footer.php";
+?>
 
 </html>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Edição de Produto</title>
+	<title>Editar Produto</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="publico/css/bootstrap.min.css" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -14,11 +14,19 @@
 
 <?php
 	include "header.php";
+	include_once("conexao.php");	/* Estabelece a conexão */
+
+	$id = $_GET['id'];
+	$sql = "SELECT * FROM produto WHERE id_produto=" . $id;
+	$produto = mysqli_fetch_array( mysqli_query($conexao, $sql) );
 ?>
 
 <hr>
 
 <body>
+	<a href="produto_visualizar.php"> Ver dados completos </a>
+	<p> </p>
+
 	<!-- Script para fazer a máscara. Com ele, você pode definir qualquer tipo de máscara com o comando onkeypress="mascara(this, '###.###.###-##')". -->
 	<script language="JavaScript">
 		function mascara(t, mask){
@@ -31,17 +39,8 @@
 		}
 	</script>
 	<!-- Fim do script -->
-	<!-- Formulário de Cadastro de Usuário -->
-	<?php
-		$id = $_GET['id'];
-		include_once("conexao.php");	/* Estabelece a conexão */
-
-		$sql = "SELECT * FROM produto WHERE id=" . $id;
-		$produto = mysqli_fetch_array( mysqli_query($conexao, $sql) );
-	?>
-	
+	<!-- Formulário de Cadastro de Usuário -->	
 	<form action="" method="POST" target="_self">
-		<div class="form-group col-md-4">
 	<fieldset>
 		<legend>Informações Pessoais:</legend>
 		<div class="form-row">
@@ -49,16 +48,40 @@
 			<label for="inputNome4">Nome</label>
 			<input type="name" name="nome" class="form-control" id="inputNome4" placeholder="Nome" value="<?php  echo $produto['nome']; ?>">
 			</div>
-			<div class="form-group col-md-6">
+			<div class="form-group col-md-3">
 			<label for="inputPrice4">Preço</label>
-			<input type="text" name="preco" class="form-control" id="inputPrice4" placeholder="Preco" value="<?php  echo $produto['preco']; ?>">
+			<input type="text" name="preco" placeholder="100.00" class="dinheiro form-control" onkeypress="mascaraDinheiro(this)" maxlength="11" value="<?php  echo $produto['preco']; ?>">
+			</div>
+			<div class="form-group col-md-3">
+			<label for="inputPrice4">Desconto</label>
+			<input type="text" name="desconto" placeholder="10.00" class="dinheiro form-control" onkeypress="mascaraDinheiro(this)" maxlength="11" value="<?php  echo $produto['desconto']; ?>">
 			</div>
 			<div class="form-group col-md-6">
-			<label for="inputDescription4">Descrição</label>
-			<input type="text" name="descricao" class="form-control" id="inputDescription4" placeholder="Descrição" value="<?php  echo $produto['descricao']; ?>">
+			<label for="inputDescription4">Fabricante</label>
+			<input type="text" name="fabricante" class="form-control" id="inputDescription4" placeholder="Nome Fabricante" value="<?php  echo $produto['fabricante']; ?>">
 			</div>
-		</div>
-	</fieldset>
+			<div class="form-group col-md-3">
+			<label for="inputPrice4">Quantidade</label>
+			<input type="text" name="quantidade" placeholder="1000" class="form-control" maxlength="11" value="<?php  echo $produto['quantidade']; ?>">
+			</div>
+			<div class="form-group col-md-3">
+			<label for="inputPrice4">Setor</label>
+			<select id="setor" name="setor" class="form-control">
+				<?php 
+					$sql = "SELECT * FROM setor";
+					$setores = mysqli_query($conexao, $sql);
+
+					foreach ($setores as $setor){
+						if($setor['id_setor'] == $produto['id_setor']){
+							echo '<option selected>' . $setor['nome'] . '</option>';
+						}
+						else{
+							echo '<option>' . $setor['nome'] . '</option>';
+						}
+					}
+				?>
+			</select>
+			</div>
 		</div>
 	</fieldset>
 	</br>

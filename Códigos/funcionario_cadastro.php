@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Cadastro de Funcionário</title>
+	<title>Cadastro de Setor</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="publico/css/bootstrap.min.css" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -20,6 +20,9 @@
 <hr>
 
 <body>
+	<a href="usuario_visualizar_completo.php?visualizar=Funcionario"> Ver dados completos </a>
+	<p> </p>
+
 	<!-- Script para fazer a máscara. Com ele, você pode definir qualquer tipo de máscara com o comando onkeypress="mascara(this, '###.###.###-##')". -->
 	<script language="JavaScript">
 		function mascara(t, mask){
@@ -74,7 +77,7 @@
 			</div>
 			<div class="form-group col-md-4">
 			<label>Salário</label>
-			<input type="text" name="salario" placeholder="1.000,00" class="dinheiro form-control" onkeypress="mascaraDinheiro(this)" maxlength="11">
+			<input type="text" name="salario" placeholder="1000,00" class="dinheiro form-control" onkeypress="mascaraDinheiro(this)" maxlength="11">
 			</div>
 			<div class="form-group col-md-4">
 			<label>Cargo</label>

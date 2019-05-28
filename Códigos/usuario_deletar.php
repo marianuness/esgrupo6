@@ -6,6 +6,7 @@ if (isset($_GET['id'])){
 	$id = $_GET['id'];
 	$tipo = $_GET['tipo'];
 
+	/*
 	if($tipo == 'Cliente'){
 		$sql = "DELETE FROM cliente WHERE id_cliente=" . $id;
 	}
@@ -13,7 +14,7 @@ if (isset($_GET['id'])){
 		$sql = "DELETE FROM funcionario WHERE id_funcionario=" . $id;
 	}
 	$resultado = mysqli_query($conexao, $sql);
-
+	*/
 
 	$sql = "DELETE FROM usuario WHERE id_cadastro=" . $id;
 	$resultado = mysqli_query($conexao, $sql);

@@ -56,9 +56,9 @@
 
 		$converter_filtro = array("Ordem Alfabética"=>"nome", 
 								  "Estado"=>"estado",  
-                  				  "Cidade"=>"cidade", 
-                  				  "Número de Identificação"=>"codigo_identificacao",  
-                  				  "Cargo"=>"cargo"); 
+								  "Cidade"=>"cidade", 
+								  "Número de Identificação"=>"codigo_identificacao",  
+								  "Cargo"=>"cargo"); 
 		?>
 
 		<form action="" method="GET" target="_self">
@@ -191,7 +191,11 @@
 				}
 			?>
 		</table>
-	
+	</br>
 </body>
+
+<?php
+	include "footer.php";
+?>
 
 </html>

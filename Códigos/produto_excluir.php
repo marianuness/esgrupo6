@@ -5,7 +5,7 @@ include_once("conexao.php");
 if (isset($_GET['id'])){
 	$id = $_GET['id'];
 
-	$sql = "DELETE FROM produto WHERE id=" . $id;
+	$sql = "DELETE FROM produto WHERE id_produto=" . $id;
 	$resultado = mysqli_query($conexao, $sql);
 
 	header("Location: produto_visualizar.php"); // redireciona de volta para a página de vizualização

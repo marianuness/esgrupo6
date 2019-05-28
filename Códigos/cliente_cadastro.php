@@ -18,6 +18,11 @@
 <hr>
 
 <body>
+	<a href="usuario_visualizar_completo.php?visualizar=Cliente"> Ver dados completos </a>
+	<p> </p>
+	<a href="usuario_visualizar.php?visualizar=Cliente"> Ver dados simplificados </a>
+	<p> </p>
+
 	<!-- Script para fazer a máscara. Com ele, você pode definir qualquer tipo de máscara com o comando onkeypress="mascara(this, '###.###.###-##')". -->
 	<script language="JavaScript">
 		function mascara(t, mask){

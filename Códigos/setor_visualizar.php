@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Produtos</title>
+	<title>Setores</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="publico/css/bootstrap.min.css" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -27,11 +27,12 @@
 
 <body>
 	<?php
-		if(isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'Funcionario'){
+		if(isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'Funcionario' && $_SESSION['cargo'] == 'Administrador'){
 			?>
 
 			<p> </p>
-			<a href="produto_cadastro.php"> Cadastrar Produto </a> </br>
+			<a href="setor_cadastro.php"> Cadastrar Setor </a> </br>
+			<p> </p>
 
 			<?php
 		}
@@ -44,18 +45,15 @@
 		}
 
 		$converter_filtro = array("Ordem Alfabética"=>"nome", 
-								  "Preço"=>"preco",
-								  "Quantidade"=>"quantidade",  
-								  "Setor"=>"id_setor"); 
-		
+								  "Administrador Responsável"=>"id_responsavel",  
+								  "Número Identificação"=>"codigo_identificacao"); 
 	?>
-	<br>
 	<form action="" method="GET" target="_self">
 		<div class="form-row">
 			<div class="form-group col-md-3">
 				<select id="inputState" name="filtro" class="form-control">
 					<?php 
-						$filtros = array('Ordem Alfabética', 'Preço', 'Quantidade', 'Setor');
+						$filtros = array('Ordem Alfabética', 'Administrador Responsável', 'Número Identificação');
 
 						foreach ($filtros as &$filtro_atual){
 							if(isset($filtroURL) && $filtroURL == $filtro_atual){
@@ -74,48 +72,43 @@
 		</div>
 	</form>
 
-<br>
-<table>
-	<tr>
-		<th>Nome</th>
-		<th>Preço</th> 
-		<th>Fabricante</th>
-		<th>Desconto</th>
-		<th>Quantidade</th>
-		<th>Setor</th>
-	</tr>
-	<?php
-		include_once("conexao.php");
+	<br>
+	<table>
+		<tr>
+			<th>Nome</th>
+			<th>(ID) Administrador Responsável</th> 
+			<th>Número Identificação</th>
+		</tr>
+		<?php
+			include_once("conexao.php");
 
-		$filtro = $converter_filtro[$filtroURL];
+			$filtro = $converter_filtro[$filtroURL];
 
-		$sql = "SELECT * FROM produto ORDER BY ".$filtro;
-		$produtos = mysqli_query($conexao, $sql);
+			$sql = "SELECT * FROM setor ORDER BY ".$filtro;
+			$setores = mysqli_query($conexao, $sql);
+			
+			foreach($setores as $setor){
 
-		foreach($produtos as $produto){		
+				/*
+				$sql = "SELECT nome FROM usuario WHERE id_cadastro=".$setor['id_responsavel'];
+				$usuario = mysqli_fetch_array( mysqli_query($conexao, $sql) );
+				$nome_responsavel = $usuario['nome'];
+				*/
 
-			/*
-			$sql = "SELECT nome FROM setor WHERE id_setor=".$produto['id_setor'];
-			$setor = mysqli_fetch_array( mysqli_query($conexao, $sql) );
-			$setor = $setor['nome'];
-			*/
+				echo "<tr>";
+					echo '<td>' . $setor['nome'] . '</td>';
+					echo '<td>' . $setor['id_responsavel'] . '</td>';
+					echo '<td>' . $setor['codigo_identificacao'] . '</td>';
 
-			echo "<tr>";
-				echo '<td>' . $produto['nome'] . '</td>';
-				echo '<td>' . $produto['preco'] . '</td>';
-				echo '<td>' . $produto['fabricante'] . '</td>';
-				echo '<td>' . $produto['desconto'] . '</td>';
-				echo '<td>' . $produto['quantidade'] . '</td>';
-				echo '<td>' . $produto['id_setor'] . '</td>';
-				if(isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'Funcionario'){
-					echo '<td> <a href="produto_editar.php?id='.$produto['id_produto'].'"> Editar Produto </a> </td>';
-					echo '<td> <a href="produto_excluir.php?id='.$produto['id_produto'].'"> Excluir Produto </a> </td>';
-				}
-			echo "</tr>";
-		}
-	?>
-</table>
-<br>
+					if(isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'Funcionario' && $_SESSION['cargo'] == 'Administrador'){
+						echo '<td> <a href="setor_editar.php?id='.$setor['id_setor'].'"> Editar Setor </a> </td>';
+						echo '<td> <a href="setor_excluir.php?id='.$setor['id_setor'].'"> Excluir Setor </a> </td>';
+					}
+				echo "</tr>";
+			}
+		?>
+	</table>
+	<br>
 </body>
 
 <?php

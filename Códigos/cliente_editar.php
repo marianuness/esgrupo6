@@ -18,8 +18,8 @@
 <hr>
 
 <body>
-	<a href="usuario_visualizar_completo.php?visualizar=Cliente"> Ver dados completos </a>
 	<p> </p>
+	<a href="usuario_visualizar_completo.php?visualizar=Cliente"> Ver dados completos </a>
 
 	<!-- Script para fazer a máscara. Com ele, você pode definir qualquer tipo de máscara com o comando onkeypress="mascara(this, '###.###.###-##')". -->
 	<script language="JavaScript">
@@ -199,8 +199,7 @@
 				<div class="alert alert-success">Usuário editado com sucesso!</div>
 				<?php
 			}
-			else
-			{
+			else{
 				die(mysqli_error($conexao));
 				mysqli_close($conexao);
 				?>

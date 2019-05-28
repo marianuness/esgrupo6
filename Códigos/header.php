@@ -43,7 +43,7 @@
 						</li>
 
 						<li class="nav-item <?php esta_ativa('#');?>">
-						<a class="nav-link" href="#">Setores</a>
+						<a class="nav-link" href="setor_visualizar.php">Setores</a>
 						</li>
 
 						<li class="nav-item <?php esta_ativa('#');?>">

@@ -21,9 +21,8 @@
 <hr>
 
 <body>
-	<a href="produto_visualizar.php"> Ver dados completos </a>
+	<a href="setor_visualizar.php"> Ver dados completos </a>
 	<p> </p>
-
 	<!-- Script para fazer a máscara. Com ele, você pode definir qualquer tipo de máscara com o comando onkeypress="mascara(this, '###.###.###-##')". -->
 	<script language="JavaScript">
 		function mascara(t, mask){
@@ -49,33 +48,23 @@
 			<input type="name" name="nome" class="form-control" id="inputNome4" placeholder="Nome">
 			</div>
 			<div class="form-group col-md-3">
-			<label for="inputPrice4">Preço</label>
-			<input type="text" name="preco" placeholder="100.00" class="dinheiro form-control" onkeypress="mascaraDinheiro(this)" maxlength="11">
-			</div>
-			<div class="form-group col-md-3">
-			<label for="inputPrice4">Desconto</label>
-			<input type="text" name="desconto" placeholder="10.00" class="dinheiro form-control" onkeypress="mascaraDinheiro(this)" maxlength="11">
-			</div>
-			<div class="form-group col-md-6">
-			<label for="inputDescription4">Fabricante</label>
-			<input type="text" name="fabricante" class="form-control" id="inputDescription4" placeholder="Nome Fabricante">
-			</div>
-			<div class="form-group col-md-3">
-			<label for="inputPrice4">Quantidade</label>
-			<input type="text" name="quantidade" placeholder="1000" class="form-control" maxlength="11">
-			</div>
-			<div class="form-group col-md-3">
-			<label for="inputPrice4">Setor</label>
-			<select id="setor" name="setor" class="form-control">
-				<?php 
-					$sql = "SELECT * FROM setor";
-					$setores = mysqli_query($conexao, $sql);
+			<label for="inputPrice4">Administrador Responsável</label>
+			<select id="nome_responsavel" name="nome_responsavel" class="form-control">
+				<?php
+					$sql = "SELECT id_funcionario FROM funcionario WHERE cargo='Administrador'";
+					$funcionarios = mysqli_query($conexao, $sql);
 
-					foreach ($setores as $setor){
-						echo '<option>' . $setor['nome'] . '</option>';
+					foreach($funcionarios as $funcionario){
+						$sql = "SELECT nome FROM usuario WHERE id_cadastro=".$funcionario['id_funcionario'];
+						$usuario = mysqli_fetch_array( mysqli_query($conexao, $sql) );
+						echo '<option>' . $usuario['nome'] . '</option>';
 					}
 				?>
 			</select>
+			</div>
+			<div class="form-group col-md-3">
+			<label>Número de Identificação</label>
+			<input type="name" name="codigo_identificacao" class="form-control" placeholder="11.111-11" onkeypress="mascara(this, '##.###-##')" maxlength="9">
 			</div>
 		</div>
 	</fieldset>
@@ -91,28 +80,35 @@
 		include_once("conexao.php");	/* Estabelece a conexão */
 
 			$nome = $_POST['nome'];
-			$preco = $_POST['preco'];
-			$fabricante = $_POST['fabricante'];
-			$desconto = $_POST['desconto'];
-			$quantidade = $_POST['quantidade'];
-			$setor = $_POST['setor'];
+			$nome_responsavel = $_POST['nome_responsavel'];
+			$codigo_identificacao = $_POST['codigo_identificacao'];
 
-			$sql = "SELECT id_setor FROM setor WHERE nome='".$setor."'";
-			$setor = mysqli_fetch_array( mysqli_query($conexao, $sql) );
-			$id_setor = $setor['id_setor'];
+			$sql = "SELECT id_cadastro FROM usuario WHERE nome='".$nome_responsavel."'";
+			$usuarios = mysqli_query($conexao, $sql);
 
-			$sql = "INSERT INTO produto (nome, preco, fabricante, desconto, quantidade, id_setor) VALUES ('$nome', '$preco', '$fabricante', '$desconto', '$quantidade', '$id_setor')";
+			foreach ($usuarios as $usuario){
+				$sql = "SELECT id_funcionario FROM funcionario WHERE id_funcionario=".$usuario['id_cadastro'];
+				$funcionarios = mysqli_query($conexao, $sql);
+				$row = mysqli_fetch_row($funcionarios);
+				if(implode(null,$row) != null){
+					foreach ($funcionarios as $funcionario){
+						$id_responsavel = $funcionario['id_funcionario'];
+					}
+				}
+			}
+
+			$sql = "INSERT INTO setor (nome, id_responsavel, codigo_identificacao) VALUES ('$nome', '$id_responsavel', '$codigo_identificacao')";
 			$resultado = mysqli_query($conexao, $sql);
 
 			if($resultado){
 				?>
-				<div class="alert alert-success">Produto cadastrado com sucesso!</div>
+				<div class="alert alert-success">Setor cadastrado com sucesso!</div>
 				<?php
 			}
 			else{
 				die(mysqli_error($conexao));
 				?>
-				<div class="alert alert-warning">Falha ao cadastrar produto!</div>
+				<div class="alert alert-warning">Falha ao cadastrar setor!</div>
 				<?php
 			}
 		
