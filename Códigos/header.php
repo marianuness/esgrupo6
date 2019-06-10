@@ -32,6 +32,9 @@
 					<li class="nav-item <?php esta_ativa('produto_visualizar.php');?>">
 					<a class="nav-link" href="produto_visualizar.php">Lista de Produtos</a>
 					</li>
+					<li class="nav-item <?php esta_ativa('#');?>">
+					<a class="nav-link" href="carrinho_visualizar.php">Carrinho</a>
+					</li>
 
 					<?php
 
@@ -47,7 +50,7 @@
 						</li>
 
 						<li class="nav-item <?php esta_ativa('#');?>">
-						<a class="nav-link" href="#">Vendas</a>
+						<a class="nav-link" href="vendas_visualizar.php">Vendas</a>
 						</li>
 
 						<?php
