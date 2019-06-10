@@ -36,6 +36,8 @@
 			$_SESSION['logado'] = true;
 			$_SESSION['nome'] = $usuario;
 			$_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
+			$_SESSION['id'] = $usuario['id_cadastro'];
+			
 			if($usuario['tipo_usuario'] == 'Funcionario'){
 				$id = $usuario['id_cadastro'];
 				$sql = "SELECT cargo FROM funcionario WHERE id_funcionario='$id'";

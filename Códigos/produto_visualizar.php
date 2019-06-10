@@ -81,7 +81,7 @@
 		<th>Preço</th> 
 		<th>Fabricante</th>
 		<th>Desconto</th>
-		<th>Quantidade</th>
+		<th>Estoque</th>
 		<th>Setor</th>
 	</tr>
 	<?php
@@ -110,6 +110,9 @@
 				if(isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'Funcionario'){
 					echo '<td> <a href="produto_editar.php?id='.$produto['id_produto'].'"> Editar Produto </a> </td>';
 					echo '<td> <a href="produto_excluir.php?id='.$produto['id_produto'].'"> Excluir Produto </a> </td>';
+				}
+				if(isset($_SESSION['logado']) && $_SESSION['logado'] && $_SESSION['tipo_usuario'] == 'Cliente'){
+					echo '<td> <a href="produto_comprar.php?id='.$produto['id_produto'].'"> Comprar </a> </td>';
 				}
 			echo "</tr>";
 		}
